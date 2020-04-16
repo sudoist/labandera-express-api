@@ -28,7 +28,7 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-console.log(process.env.NODE_ENV);
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
