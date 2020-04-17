@@ -28,9 +28,11 @@ mongoose.connect(process.env.DB_CONNECTION, {
 // controllers
 var apiSeeder = require('./controllers/apiSeeder');
 var apiController = require('./controllers/apiController');
+var authController = require('./controllers/authController');
 
 apiSeeder(app);
 apiController(app);
+authController(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
