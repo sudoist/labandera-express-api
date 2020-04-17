@@ -25,6 +25,13 @@ mongoose.connect(process.env.DB_CONNECTION, {
   useUnifiedTopology: true
 });
 
+// controllers
+var apiSeeder = require('./controllers/apiSeeder');
+var apiController = require('./controllers/apiController');
+
+apiSeeder(app);
+apiController(app);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
