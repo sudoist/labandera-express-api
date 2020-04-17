@@ -70,9 +70,9 @@ module.exports = function(app) {
          }
     ];
     
-   app.get('/api/setupOrders', function(req, res) {
+   app.get('/api/seedOrders', function(req, res) {
 
-        Orders.find({}, function(err, orders) {
+        Orders.find({}, function(orders) {
             
             if (orders.length === 0) {
 
@@ -81,6 +81,10 @@ module.exports = function(app) {
                 Orders.create(starterOrders, function(err, results) {
                     res.send(results);
                 }); 
+
+                res.send('Success');
+
+                return;
             }
             
             res.send('Database is not empty.');
