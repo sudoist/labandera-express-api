@@ -14,6 +14,16 @@ module.exports = function(app) {
         });
       })
     
+    app.get('/api/orderByName/:name', function(req, res) {
+        
+        Orders.findOne({ name: req.params.name }, function(err, order) {
+            if (err) throw err;
+            
+            res.send(order);
+        });
+        
+    });
+
     app.get('/api/ordersByName/:name', function(req, res) {
         
         Orders.find({ name: req.params.name }, function(err, orders) {
@@ -35,7 +45,6 @@ module.exports = function(app) {
     });
     
     app.post('/api/order', function(req, res) {
-        console.log(req.body.id);
         
         if (req.body.id) {
             Orders.findByIdAndUpdate(
