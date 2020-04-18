@@ -1,12 +1,10 @@
 const mongoose = require('mongoose')
 
 // connect to db
-beforeAll( async (done) => {
+beforeAll( async () => {
   const url = process.env.DB_CONNECTION_TESTS
   await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  done()
 })
-
 
 // for endpoints
 const request = require('supertest')
@@ -67,5 +65,9 @@ describe('Post Endpoints', () => {
 })
 
 afterAll(async () => {
-	await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
-});
+
+  // Drop the test database
+  await mongoose.connection.db.dropDatabase(process.env.DB_NAME_FOR_TESTS)
+  await mongoose.connection.close()
+  await mongoose.disconnect()
+})

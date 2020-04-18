@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 
 // connect to db
 beforeAll( async () => {
@@ -89,5 +87,9 @@ describe('Auth Endpoints', () => {
 })
 
 afterAll(async () => {
-	await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
-});
+
+  // Drop the test database
+  await mongoose.connection.db.dropDatabase(process.env.DB_NAME_FOR_TESTS)
+  await mongoose.connection.close()
+  await mongoose.disconnect()
+})
