@@ -74,12 +74,10 @@ module.exports = function(app) {
 
         Orders.find({}, function(orders) {
             
-            if (orders.length === 0) {
-
-                console.log('empy');
+            if (orders === null) {
                 
                 Orders.create(starterOrders, function(err, results) {
-                    res.send(results);
+                    if (err) return handleError(err);
                 }); 
 
                 res.send('Success');
