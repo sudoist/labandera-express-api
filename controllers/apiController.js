@@ -84,7 +84,7 @@ module.exports = function(app) {
                if (err) throw err;
             //    res.send('Success');
 
-               QRCode.toFile('./public/images/' + newOrder._id + '.png', '' + newOrder._id + '', {
+                QRCode.toFile('./public/images/' + newOrder._id + '.png', '' + newOrder._id + '', {
                     color: {
                     dark: '#00F',  // Blue dots
                     light: '#0000' // Transparent background
