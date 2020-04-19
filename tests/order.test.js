@@ -4,6 +4,17 @@ const mongoose = require('mongoose')
 beforeAll( async () => {
   const url = process.env.DB_CONNECTION_TESTS
   await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+
+  // create a user for testing
+  var password = 'jesterpasswordtestingbefeoreall';
+
+  const register = await request(app)
+  .post('/api/auth/register')
+  .send({
+    name: 'User Jester',
+    email: 'beforetest@email.com',
+    password: password,
+  });
 })
 
 // for endpoints
@@ -12,8 +23,16 @@ const app = require('../app')
 
 describe('Post Endpoints', () => {
   it('should create a new order', async () => {
+    const login = await request(app)
+    .post('/api/auth/login')
+    .send({
+      email: 'beforetest@email.com',
+      password: 'jesterpasswordtestingbefeoreall',
+    });
+
     const res = await request(app)
       .post('/api/order')
+      .set('x-access-token', login.body.token)
       .send({
         name: 'Gol D Roger',
         status: 'Order Complete',
@@ -26,11 +45,20 @@ describe('Post Endpoints', () => {
   })
 
   it('should update existing order', async () => {
+    const login = await request(app)
+    .post('/api/auth/login')
+    .send({
+      email: 'beforetest@email.com',
+      password: 'jesterpasswordtestingbefeoreall',
+    });
+
     const orderByName = await request(app)
       .get('/api/orderByName/Gol D Roger')
+      .set('x-access-token', login.body.token)
 
     const res = await request(app)
     .post('/api/order')
+    .set('x-access-token', login.body.token)
     .send({
       _id: orderByName.body._id,
       name: 'Lor D Twigo Sama',
@@ -43,23 +71,48 @@ describe('Post Endpoints', () => {
   })
 
   it('should be able to get a single record by customer name', async () => {
+    const login = await request(app)
+    .post('/api/auth/login')
+    .send({
+      email: 'beforetest@email.com',
+      password: 'jesterpasswordtestingbefeoreall',
+    });
+
     const orderByName = await request(app)
       .get('/api/orderByName/Gol D Roger')
+      .set('x-access-token', login.body.token)
     expect(orderByName.statusCode).toEqual(200)
   })
 
   it('should be able to get all records by customer name', async () => {
+    const login = await request(app)
+    .post('/api/auth/login')
+    .send({
+      email: 'beforetest@email.com',
+      password: 'jesterpasswordtestingbefeoreall',
+    });
+
     const ordersByName = await request(app)
       .get('/api/ordersByName/Gol D Roger')
+      .set('x-access-token', login.body.token)
     expect(ordersByName.statusCode).toEqual(200)
   })
 
   it('should be able to get a records by order id', async () => {
+    const login = await request(app)
+    .post('/api/auth/login')
+    .send({
+      email: 'beforetest@email.com',
+      password: 'jesterpasswordtestingbefeoreall',
+    });
+
     const orderByName = await request(app)
       .get('/api/orderByName/Lor D Twigo Sama')
+      .set('x-access-token', login.body.token)
 
     const orderById = await request(app)
       .get('/api/order/' + orderByName.body._id)
+      .set('x-access-token', login.body.token)
     expect(orderById.statusCode).toEqual(200)
   })
 })

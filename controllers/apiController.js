@@ -79,7 +79,7 @@ module.exports = function(app) {
            });
            newOrder.save(function(err) {
                if (err) throw err;
-               res.send('Success');
+            //    res.send('Success');
 
                QRCode.toFile('./public/images/' + newOrder._id + '.png', '' + newOrder._id + '', {
                     color: {
@@ -89,6 +89,7 @@ module.exports = function(app) {
                 }, function (err) {
                     if (err) throw err
                     // QR generated.
+                    res.status(200).send({ id: newOrder._id, order_created: 'success' });
                 })
            });
             
