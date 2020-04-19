@@ -1,12 +1,13 @@
 var Orders = require('../models/orderModel');
 var bodyParser = require('body-parser');
+var verifyToken = require('../auth/verifyToken')
 
 module.exports = function(app) {
     
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    app.get('/api/orders/', function (req, res) {
+    app.get('/api/orders/', verifyToken, function (req, res) {
         Orders.find({}, function(err, orders) {
             if (err) throw err;
             
@@ -14,7 +15,7 @@ module.exports = function(app) {
         });
       })
     
-    app.get('/api/orderByName/:name', function(req, res) {
+    app.get('/api/orderByName/:name', verifyToken, function(req, res) {
         
         Orders.findOne({ name: req.params.name }, function(err, order) {
             if (err) throw err;
@@ -24,7 +25,7 @@ module.exports = function(app) {
         
     });
 
-    app.get('/api/ordersByName/:name', function(req, res) {
+    app.get('/api/ordersByName/:name', verifyToken, function(req, res) {
         
         Orders.find({ name: req.params.name }, function(err, orders) {
             if (err) throw err;
@@ -34,7 +35,7 @@ module.exports = function(app) {
         
     });
     
-    app.get('/api/order/:id', function(req, res) {
+    app.get('/api/order/:id', verifyToken, function(req, res) {
        
        Orders.findById({ _id: req.params.id }, function(err, order) {
            if (err) throw err;
@@ -44,7 +45,7 @@ module.exports = function(app) {
         
     });
     
-    app.post('/api/order', function(req, res) {
+    app.post('/api/order', verifyToken, function(req, res) {
         
         if (req.body.id) {
             Orders.findByIdAndUpdate(
@@ -83,7 +84,7 @@ module.exports = function(app) {
         
     });
     
-    app.delete('/api/order', function(req, res) {
+    app.delete('/api/order', verifyToken, function(req, res) {
         
         Orders.findByIdAndRemove(req.body.id, function(err) {
             if (err) throw err;
