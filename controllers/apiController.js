@@ -65,7 +65,7 @@ module.exports = function(app) {
                 },
                 function(err, order) {
                     if (err) throw err;
-                    res.send('Success');
+                    res.send('Order updated successfully');
                 }
             );
         }
