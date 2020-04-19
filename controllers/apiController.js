@@ -1,3 +1,5 @@
+var QRCode = require('qrcode');
+
 var Orders = require('../models/orderModel');
 var bodyParser = require('body-parser');
 var verifyToken = require('../auth/verifyToken')
@@ -78,6 +80,16 @@ module.exports = function(app) {
            newOrder.save(function(err) {
                if (err) throw err;
                res.send('Success');
+
+               QRCode.toFile('./public/images/' + newOrder._id + '.png', '' + newOrder._id + '', {
+                    color: {
+                    dark: '#00F',  // Blue dots
+                    light: '#0000' // Transparent background
+                    }
+                }, function (err) {
+                    if (err) throw err
+                    // QR generated.
+                })
            });
             
         }
