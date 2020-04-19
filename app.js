@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
+mongoose.set('useFindAndModify', false);
+
 var app = express();
 
 // view engine setup

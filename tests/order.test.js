@@ -21,7 +21,7 @@ beforeAll( async () => {
 const request = require('supertest')
 const app = require('../app')
 
-describe('Post Endpoints', () => {
+describe('Orders Endpoints', () => {
   it('should create a new order', async () => {
     const login = await request(app)
     .post('/api/auth/login')
@@ -139,7 +139,7 @@ describe('Post Endpoints', () => {
     expect(ordersByName.statusCode).toEqual(200)
   })
 
-  it('should be able to get a records by order id', async () => {
+  it('should be able to get a record by order id', async () => {
     const login = await request(app)
     .post('/api/auth/login')
     .send({
@@ -151,9 +151,9 @@ describe('Post Endpoints', () => {
       .get('/api/orderByName/Lor D Twigo Sama')
       .set('x-access-token', login.body.token)
 
+    // Should work even if not authenticated for qr code scanning
     const orderById = await request(app)
       .get('/api/order/' + orderByName.body._id)
-      .set('x-access-token', login.body.token)
     expect(orderById.statusCode).toEqual(200)
   })
 })

@@ -1,4 +1,6 @@
 var QRCode = require('qrcode');
+var fs = require('fs');
+var cloudinary = require('cloudinary').v2;
 
 var Orders = require('../models/orderModel');
 var bodyParser = require('body-parser');
@@ -37,7 +39,8 @@ module.exports = function(app) {
         
     });
     
-    app.get('/api/order/:id', verifyToken, function(req, res) {
+    // Should work even if not authenticated for qr code scanning
+    app.get('/api/order/:id', function(req, res) {
        
        Orders.findById({ _id: req.params.id }, function(err, order) {
            if (err) throw err;
@@ -88,7 +91,27 @@ module.exports = function(app) {
                     }
                 }, function (err) {
                     if (err) throw err
+
                     // QR generated.
+
+                    const uploadPath = 'labandera/qrcode';
+
+                    // Upload to Cloudinary
+                    cloudinary.uploader.upload('./public/images/' + newOrder._id + '.png', { folder: uploadPath }, function (err, image) {
+                        if (err) { console.warn(err); }
+
+                        Orders.findByIdAndUpdate(
+                            newOrder._id, 
+                            {
+                                qr: image.url
+                            },
+                            function(err, order) {
+                                if (err) throw err;
+                            }
+                        );
+
+                    });
+
                     res.status(200).send({ id: newOrder._id, order_created: 'success' });
                 })
            });

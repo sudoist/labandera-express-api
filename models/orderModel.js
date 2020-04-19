@@ -8,7 +8,8 @@ var orderSchema = new Schema({
     price: String,
     isPaid: String,
     dateReceived: String,
-    dateReturned: String
+    dateReturned: String,
+    qr: String
 });
 
 var Orders = mongoose.model('Orders', orderSchema);
