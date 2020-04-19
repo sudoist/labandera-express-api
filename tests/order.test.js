@@ -44,6 +44,47 @@ describe('Post Endpoints', () => {
     expect(res.statusCode).toEqual(200)
   })
 
+  it('should generate QR code when creating a new order', async () => {
+    const login = await request(app)
+    .post('/api/auth/login')
+    .send({
+      email: 'beforetest@email.com',
+      password: 'jesterpasswordtestingbefeoreall',
+    });
+
+    const res = await request(app)
+      .post('/api/order')
+      .set('x-access-token', login.body.token)
+      .send({
+        name: 'Gol D Roger',
+        status: 'Order Complete',
+        price: '500',
+        isPaid: 'Paid',
+        dateReceived: '2020-02-02',
+        dateReturned: '2020-02-22'
+      });
+
+      await res
+
+      // check if generated qr image exists
+      const fs = require('fs')
+
+      const path = './public/images/' + res.body.id + '.png'
+
+      var fileExists = false
+      
+      fs.access(path, fs.F_OK, (err) => {
+        if (err) {
+          console.error(err)          
+          expect(fileExists).toEqual(true)
+        }
+      
+        //file exists
+        fileExists = true        
+        expect(fileExists).toEqual(true)
+      })
+  })
+
   it('should update existing order', async () => {
     const login = await request(app)
     .post('/api/auth/login')
