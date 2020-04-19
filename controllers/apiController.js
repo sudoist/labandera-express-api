@@ -50,7 +50,7 @@ module.exports = function(app) {
         
     });
     
-    app.post('/api/order', verifyToken, function(req, res) {
+    app.post('/api/order/:id', verifyToken, function(req, res) {
         
         if (req.body.id) {
             Orders.findByIdAndUpdate(
@@ -120,7 +120,7 @@ module.exports = function(app) {
         
     });
     
-    app.delete('/api/order', verifyToken, function(req, res) {
+    app.delete('/api/order/:id', verifyToken, function(req, res) {
         
         Orders.findByIdAndRemove(req.body.id, function(err) {
             if (err) throw err;
