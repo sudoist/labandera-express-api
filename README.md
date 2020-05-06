@@ -2,7 +2,7 @@
 
 ## Setup
 
-### Clone with submodule. This will get the Laradock instance for this project.
+#### Clone with submodule. This will get the Nodedock instance for this project.
 
 `git clone https://github.com/sudoist/labandera-express-api.git --recurse-submodules`
 
