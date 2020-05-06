@@ -1,5 +1,13 @@
 # Labandera Express API
 
+## Setup
+
+### Clone with submodule. This will get the Laradock instance for this project.
+
+`git clone https://github.com/sudoist/labandera-express-api.git --recurse-submodules`
+
+## About
+
 API backend for the laundry shop application.
 
 This can be used for all other front-end for portfolio.
